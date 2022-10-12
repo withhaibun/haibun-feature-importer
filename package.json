@@ -1,0 +1,26 @@
+{
+  "name": "haibun-feature-importer",
+  "lsd:module": true,
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "types": "build/src/index.d.ts",
+  "scripts": {
+    "test": "jest --config jest.config.ts",
+    "test-watch": "jest --config jest.config.ts --watch",
+    "tsc": "tsc",
+    "tsc-watch": "tsc --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@haibun/core": "1.10.2"
+  },
+  "devDependencies": {
+    "jest": "^26",
+    "ts-jest": "^26",
+    "ts-node": "^10.0.0",
+    "@types/node": "^15.0.1",
+    "@types/jest": "^26.0.19"
+  }
+}
