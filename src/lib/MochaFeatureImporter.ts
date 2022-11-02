@@ -1,22 +1,10 @@
 
+import { TFeatureError, TFeatureParsed } from "./defs";
+
 const PAGE = 'Page';
 const WIDTH = 'Width';
 const HEIGHT = 'Height';
 const SELECTOR = 'Selector';
-
-export type TFeatureError = {
-    ok: false;
-    error: {
-        message: string
-    }
-}
-
-type TFeatureParsed = {
-    ok: true,
-    backgrounds: any,
-    feature: string
-}
-
 
 export function getFeatures(parsed: string): TFeatureError | TFeatureParsed {
     const stored: { [tag: string]: number } = {};

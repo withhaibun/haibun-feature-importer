@@ -1,6 +1,6 @@
 import { testWithDefaults } from '@haibun/core/build/lib/test/lib';
 
-import haibunFeatureImporter from './haibunFeatureImporter-stepper';
+import haibunFeatureImporter from './feature-importer-stepper';
 
 describe('haibunFeatureImporter test', () => {
   it.only('passes', async () => {

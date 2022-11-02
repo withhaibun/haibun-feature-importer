@@ -1,5 +1,5 @@
 {
-  "name": "haibun-feature-importer",
+  "name": "@haibun/feature-importer",
   "lsd:module": true,
   "version": "0.0.1",
   "description": "",
