@@ -1,11 +1,11 @@
-import { TWithContext } from "@haibun/context/build/Context";
 import ContextFeatureImporter from "./ContextFeatureImporter";
 import { TControl, TEvent } from "./defs";
+import { WEB_PAGE, SELECTOR } from '@haibun/domain-webpage/build/domain-webpage';
 
 const START_RECORDING = {
     '@context': '#haibun/control',
     control: 'startRecording',
-    href: 'somepage',
+    href: 'http://test',
     ctime: 1667409774024
 }
 
@@ -66,7 +66,7 @@ const SUBMIT_FORM = {
 describe('context code2haibun', () => {
     it('throws with no background page', async () => {
         const cfi = new ContextFeatureImporter();
-        expect(async () => await cfi.eventToStatement(<TEvent>KEYDOWN_INPUT)).rejects.toThrow();
+        expect(async () => await cfi.eventToStatement(<TEvent>SUBMIT_FORM)).rejects.toThrow();
     });
     it('gets click', async () => {
         const cfi = new ContextFeatureImporter();
@@ -76,12 +76,12 @@ describe('context code2haibun', () => {
         expect(res).toEqual({
             "ok": true,
             "backgrounds": {
-                "somepage": {
-                    "Selector1": "somepage",
-                    "Selector2": "div > .mw-htmlform-field-HTMLCheckField > .mw-input > .mw-ui-checkbox > label"
+                [`${WEB_PAGE}1`]: {
+                    [`[HERE]`]: "http://test",
+                    [`${SELECTOR}1`]: "div > .mw-htmlform-field-HTMLCheckField > .mw-input > .mw-ui-checkbox > label"
                 }
             },
-            "feature": "On the `Selector1` webpage\nclick `Selector2`"
+            "feature": `On the \`${WEB_PAGE}1\` webpage\nclick \`${SELECTOR}1\``
         });
     });
     it('keystrokes', async () => {
@@ -90,16 +90,15 @@ describe('context code2haibun', () => {
         await cfi.eventToStatement(<TEvent>KEYDOWN_INPUT);
         await cfi.eventToStatement(<TEvent>KEYDOWN_INPUT2);
         const res = cfi.getResult();
-        console.log('🤑', JSON.stringify(res, null, 2));
         expect(res).toEqual({
             "ok": true,
             "backgrounds": {
-                "somepage": {
-                    "Selector1": "somepage",
-                    "Selector2": "#wpPassword1",
+                [`${WEB_PAGE}1`]: {
+                    [`[HERE]`]: "http://test",
+                    [`${SELECTOR}1`]: "#wpPassword1",
                 }
             },
-            "feature": "On the `Selector1` webpage\ninput \"aA for `Selector2`"
+            "feature": `On the \`${WEB_PAGE}1\` webpage\ninput \"aA for \`${SELECTOR}1\``
         }
         );
     });

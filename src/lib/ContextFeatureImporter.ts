@@ -1,20 +1,14 @@
 import { TWithContext } from "@haibun/context/build/Context";
 import BaseFeatureImporter from "./BaseFeatureImporter";
 import { TControl, TEvent, TFeatureParsed } from "./defs";
-import { WEB_PAGE } from '@haibun/domain-webpage/build/domain-webpage';
-
-const PAGE = 'Page';
-const WIDTH = 'Width';
-const HEIGHT = 'Height';
-const SELECTOR = 'Selector';
+import { WEB_PAGE, SELECTOR } from '@haibun/domain-webpage/build/domain-webpage';
 
 export default class ContextFeatureImporter extends BaseFeatureImporter {
     stored: { [tag: string]: number } = {};
     tags: { [tag: string]: string | number } = {};
     backgrounds: { [pageName: string]: { [tag: string]: string | number } } = {};
-    currentPageTag: string | undefined = undefined;
     statements: string[] = [];
-    buffered: string;
+    inputBuffered: { input: string, selector: string } | undefined = undefined;
 
     getResult() {
         this.finishBuffered();
@@ -25,24 +19,18 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
         }
     }
     finishBuffered() {
-        if (this.buffered) {
-            this.statements.push(this.buffered);
-            this.buffered = undefined;
+        if (this.inputBuffered) {
+            const { input, selector } = this.inputBuffered;
+            this.statements.push(`input "${input} for ${this.variableQuoted(this.bg(SELECTOR, selector))}`);
+            this.inputBuffered = undefined;
         }
     }
 
-    // bq = (what: string, val: string | number, isCurrent: boolean = false) => {
-    //     return this.vq(this.bg(what, val, isCurrent));
-    // }
-
-    variableQuoted = (tag: string) => '`' + tag + '`';
-
     controlToStatement(contexted: TControl): Promise<void> {
         const { control } = contexted;
-        console.log('CONTROL', contexted);
         if (control === 'startRecording') {
-            this.currentPageTag = contexted.href;
-            this.addStatement(`On the ${this.variableQuoted(this.bg(SELECTOR, contexted.href))} ${WEB_PAGE}`);
+            const tag = this.setCurrentPage(contexted.href);
+            this.addStatement(`On the ${this.variableQuoted(tag)} ${WEB_PAGE}`);
             this.reset();
             return;
         }
@@ -58,7 +46,6 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
     }
     async eventToStatement(event: TEvent): Promise<void> {
         const { action } = event;
-        console.log('EVENT', action);
         if (action === 'click') {
             this.addStatement(`click ${this.variableQuoted(this.bg(SELECTOR, event.selector))}`);
             return;
@@ -68,14 +55,14 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
             return;
         }
         if (action === 'keydown') {
-            this.buffered = `input "${event.value + String.fromCharCode(parseInt(event.keyCode, 10))} for ${this.variableQuoted(this.bg(SELECTOR, event.selector))}`;
+            this.inputBuffered = {
+                input: event.value + String.fromCharCode(parseInt(event.keyCode, 10)),
+                selector: event.selector
+            }
             return;
         }
         if (action === 'submit') {
-            this.buffered = `submit ${this.variableQuoted(this.bg(SELECTOR, event.selector))}`;
-            return;
-        }
-        if (action === 'change') {
+            this.addStatement(`submit ${this.variableQuoted(this.bg(SELECTOR, event.selector))}`);
             return;
         }
         console.log('🤑 unknown', JSON.stringify(event, null, 2));
