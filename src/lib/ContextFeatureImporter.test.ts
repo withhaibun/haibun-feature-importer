@@ -1,6 +1,7 @@
 import ContextFeatureImporter from "./ContextFeatureImporter";
 import { TControl, TEvent } from "./defs";
 import { WEB_PAGE, SELECTOR } from '@haibun/domain-webpage/build/domain-webpage';
+import TestLogger from '@haibun/core/build/lib/TestLogger';
 
 const START_RECORDING = {
     '@context': '#haibun/control',
@@ -65,11 +66,11 @@ const SUBMIT_FORM = {
 
 describe('context code2haibun', () => {
     it('throws with no background page', async () => {
-        const cfi = new ContextFeatureImporter();
+        const cfi = new ContextFeatureImporter(new TestLogger());
         expect(async () => await cfi.eventToStatement(<TEvent>SUBMIT_FORM)).rejects.toThrow();
     });
     it('gets click', async () => {
-        const cfi = new ContextFeatureImporter();
+        const cfi = new ContextFeatureImporter(new TestLogger());
         await cfi.controlToStatement(<TControl>START_RECORDING);
         await cfi.eventToStatement(<TEvent>CLICK_LABEL);
         const res = cfi.getResult();
@@ -85,7 +86,7 @@ describe('context code2haibun', () => {
         });
     });
     it('keystrokes', async () => {
-        const cfi = new ContextFeatureImporter();
+        const cfi = new ContextFeatureImporter(new TestLogger());
         await cfi.controlToStatement(<TControl>START_RECORDING);
         await cfi.eventToStatement(<TEvent>KEYDOWN_INPUT);
         await cfi.eventToStatement(<TEvent>KEYDOWN_INPUT2);

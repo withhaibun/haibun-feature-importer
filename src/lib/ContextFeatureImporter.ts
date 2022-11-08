@@ -21,11 +21,10 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
     finishBuffered() {
         if (this.inputBuffered) {
             const { input, selector } = this.inputBuffered;
-            this.statements.push(`input "${input} for ${this.variableQuoted(this.bg(SELECTOR, selector))}`);
+            this.addStatement(`input "${input}" for ${this.variableQuoted(this.bg(SELECTOR, selector))}`, false);
             this.inputBuffered = undefined;
         }
     }
-
     controlToStatement(contexted: TControl): Promise<void> {
         const { control } = contexted;
         if (control === 'startRecording') {
@@ -41,11 +40,15 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
         throw Error(`Unknown control ${JSON.stringify(control)}`);
     }
     reset() {
-        console.info('not resetting');
-        // this.statements = [];
+        this.statements = [];
+        this.backgrounds = {};
     }
     async eventToStatement(event: TEvent): Promise<void> {
         const { action } = event;
+        if (action === 'change') {
+            this.finishBuffered();
+            return;
+        }
         if (action === 'click') {
             this.addStatement(`click ${this.variableQuoted(this.bg(SELECTOR, event.selector))}`);
             return;
@@ -69,8 +72,11 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
 
         // throw Error(`Unknown event action ${action} from ${JSON.stringify(event)}`);
     }
-    addStatement(statement: string) {
-        this.finishBuffered();
+    addStatement(statement: string, debuffer = true) {
+        this.logger.log(`adding statement: ${statement}`)
+        if (debuffer) {
+            this.finishBuffered();
+        }
         this.statements.push(statement);
     }
     contextToStatement(context: TWithContext): Promise<void> {

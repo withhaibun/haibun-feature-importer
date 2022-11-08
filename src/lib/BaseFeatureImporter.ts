@@ -1,4 +1,5 @@
 import { TResultError } from "@haibun/core/build/lib/defs";
+import { ILogger } from "@haibun/core/build/lib/interfaces/logger";
 import { WEB_PAGE } from "@haibun/domain-webpage";
 import { TFeatureParsed } from "./defs";
 
@@ -9,6 +10,11 @@ export default abstract class BaseFeatureImporter {
     currentPageTag: string | undefined = undefined;
     statements: string[] = [];
     inputBuffered: { input: string, selector: string } | undefined = undefined;
+    logger: ILogger;
+
+    constructor(logger: ILogger) {
+        this.logger = logger;
+    }
 
     abstract getResult(): TFeatureParsed | TResultError;
 
@@ -36,6 +42,10 @@ export default abstract class BaseFeatureImporter {
     }
 
     private getTag(what: string, val: string | number) {
+        const already = Object.keys(this.tags).find(k => this.tags[k] === val);
+        if (already) {
+            return already;
+        }
         let num = this.stored[what] || 0;
         this.stored[what] = ++num;
         const tag = `${what}${num}`;

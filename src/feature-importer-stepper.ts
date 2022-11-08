@@ -5,11 +5,13 @@ import { IWebSocketServer, TWithContext, WEB_SOCKET_SERVER } from '@haibun/conte
 import { TControl, TEvent } from './lib/defs';
 import ContextFeatureImporter from './lib/ContextFeatureImporter';
 
-const HaibunFeatureImporterStepper = class HaibunFeatureImporterStepper extends AStepper {
-  contextToFeatures = new ContextFeatureImporter();
+const FeatureImporterStepper = class FeatureImporterStepper extends AStepper {
+  contextToFeatures: ContextFeatureImporter;
+
   setWorld(world: TWorld, steppers: AStepper[]) {
+    this.world = world;
+    this.contextToFeatures = new ContextFeatureImporter(this.getWorld().logger);
     super.setWorld(world, steppers);
-    this.contextToFeatures
   }
 
   steps = {
@@ -51,4 +53,4 @@ const HaibunFeatureImporterStepper = class HaibunFeatureImporterStepper extends 
   }
 }
 
-export default HaibunFeatureImporterStepper;
+export default FeatureImporterStepper;
