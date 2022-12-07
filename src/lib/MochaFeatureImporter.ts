@@ -49,7 +49,6 @@ export function getFeatures(parsed: string): TFeatureError | TFeatureParsed {
         },
     }
     const navigationPromise = (...args: any) => {
-        console.log('navigationPromise', args);
     }
     parsed = parsed.replace(/await/g, 'this.');
     try {

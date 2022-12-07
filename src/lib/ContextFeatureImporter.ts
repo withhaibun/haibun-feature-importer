@@ -28,9 +28,9 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
     controlToStatement(contexted: TControl): Promise<void> {
         const { control } = contexted;
         if (control === 'startRecording') {
+            this.reset();
             const tag = this.setCurrentPage(contexted.href);
             this.addStatement(`On the ${this.variableQuoted(tag)} ${WEB_PAGE}`);
-            this.reset();
             return;
         }
         if (control === 'stopRecording') {

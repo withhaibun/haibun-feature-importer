@@ -1,0 +1,38 @@
+{
+  "version": "1.11.1",
+  "name": "@haibun/feature-importer-with-browser-extension",
+  "files": [
+    "build/**"
+  ],
+  "bin": {
+    "recorder": "build/recorder.js"
+  },
+  "description": "WebSockets importer and playwright browser extension to convert browser context events to features",
+  "main": "index.js",
+  "types": "build/src/index.d.ts",
+  "scripts": {
+    "test": "jest --config jest.config.ts",
+    "test-watch": "jest --config jest.config.ts --watch",
+    "tsc": "tsc",
+    "tsc-watch": "tsc --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@haibun/browser-extension": "1.11.0",
+    "@haibun/context": "^1.11.0",
+    "@haibun/core": "^1.11.0",
+    "@haibun/domain-storage": "^1.11.0",
+    "@haibun/domain-webpage": "^1.11.0",
+    "@haibun/feature-importer": "^1.11.0",
+    "@haibun/storage-fs": "^1.11.0",
+    "@haibun/web-playwright": "^1.11.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.19",
+    "@types/node": "^18.11.11",
+    "jest": "^26",
+    "ts-jest": "^26",
+    "ts-node": "^10.0.0"
+  }
+}

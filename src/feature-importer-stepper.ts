@@ -19,6 +19,9 @@ const FeatureImporterStepper = class FeatureImporterStepper extends AStepper {
       gwta: 'add browser contexts to WebSocket server',
       action: async () => {
         const webSocketServer: IWebSocketServer = getFromRuntime(this.getWorld().runtime, WEB_SOCKET_SERVER);
+        if (!webSocketServer) {
+          return actionNotOK('WebSocket server not found');
+        }
         webSocketServer.addContextProcessors({
           '#haibun/event': (message: TWithContext) => this.contextToFeatures.eventToStatement(message as TEvent),
           '#haibun/control': (message: TWithContext) => this.contextToFeatures.controlToStatement(message as TControl)

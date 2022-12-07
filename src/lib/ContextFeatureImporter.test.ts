@@ -31,7 +31,6 @@ const KEYDOWN_INPUT2 = {
     ctime: 1667394699264
 }
 
-
 const CLICK_LABEL = {
     '@context': '#haibun/event',
     selector: 'div > .mw-htmlform-field-HTMLCheckField > .mw-input > .mw-ui-checkbox > label',
@@ -99,7 +98,7 @@ describe('context code2haibun', () => {
                     [`${SELECTOR}1`]: "#wpPassword1",
                 }
             },
-            "feature": `On the \`${WEB_PAGE}1\` webpage\ninput \"aA for \`${SELECTOR}1\``
+            "feature": `On the \`${WEB_PAGE}1\` webpage\ninput \"aA\" for \`${SELECTOR}1\``
         }
         );
     });

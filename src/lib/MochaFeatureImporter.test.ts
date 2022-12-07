@@ -39,7 +39,6 @@ await navigationPromise({"action":"NAVIGATION","frameId":null,"frameUrl":null})
             ok: true
         }
         const res = getFeatures(code)
-        console.log('🤑', JSON.stringify(res, null, 2));
         expect(res).toEqual(expected);
     });
 });
