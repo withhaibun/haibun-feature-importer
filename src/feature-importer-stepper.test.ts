@@ -30,6 +30,6 @@ describe('FeatureImporter test', () => {
     const result = await testWithDefaults([feature], [FeatureImporter, TestWSS]);
 
     expect(result.ok).toBe(true);
-    expect(Object.keys(assignedProcessors)).toEqual(['#haibun/event', '#haibun/control']);
+    expect(Object.keys(assignedProcessors)).toEqual(['#haibun/event', '#haibun/control', '#haibun/info']);
   });
 });

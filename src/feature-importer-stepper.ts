@@ -24,7 +24,8 @@ const FeatureImporterStepper = class FeatureImporterStepper extends AStepper {
         }
         webSocketServer.addContextProcessors({
           '#haibun/event': (message: TWithContext) => this.contextToFeatures.eventToStatement(message as TEvent),
-          '#haibun/control': (message: TWithContext) => this.contextToFeatures.controlToStatement(message as TControl)
+          '#haibun/control': (message: TWithContext) => this.contextToFeatures.controlToStatement(message as TControl),
+          '#haibun/info': (message: TWithContext) => this.contextToFeatures.infoStatement(message as TControl)
         });
 
         return OK;

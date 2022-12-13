@@ -37,6 +37,10 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
             console.log(this.getResult());
             return;
         }
+        if (control === 'navigation') {
+            console.log('navigation');
+            return;
+        }
         throw Error(`Unknown control ${JSON.stringify(control)}`);
     }
     reset() {
@@ -86,9 +90,15 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
                 return this.eventToStatement(rest as TEvent);
             case '#haibun/control':
                 return this.controlToStatement(rest as TControl);
+            case '#haibun/info':
+                return this.infoStatement(rest as TControl);
             default:
                 throw Error('known context type');
         }
+    }
+    infoStatement(info: TControl): Promise<void> {
+        console.log('info', info);
+        return;
     }
     // goto(where: string) {
     //     currentPageTag = bg(PAGE, where, true);
