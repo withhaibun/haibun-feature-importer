@@ -25,23 +25,23 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
             this.inputBuffered = undefined;
         }
     }
-    controlToStatement(contexted: TControl): Promise<void> {
+    controlToStatement(contexted: TControl) {
         const { control } = contexted;
         if (control === 'startRecording') {
             this.reset();
-            const tag = this.setCurrentPage(contexted.href);
+            const tag = this.setCurrentPage(contexted.href!);
             this.addStatement(`On the ${this.variableQuoted(tag)} ${WEB_PAGE}`);
-            return;
-        }
-        if (control === 'stopRecording') {
+        } else if (control === 'recordCurrentUrl') {
+            const tag = this.setCurrentPage(contexted.href!);
+            this.addStatement(`On the ${this.variableQuoted(tag)} ${WEB_PAGE}`);
+        } else if (control === 'viewportSize') {
+        } else if (control === 'stopRecording') {
             console.log(this.getResult());
-            return;
-        }
-        if (control === 'navigation') {
+        } else if (control === 'navigation') {
             console.log('navigation');
-            return;
+        } else {
+            throw Error(`Unknown control ${JSON.stringify(control)}`);
         }
-        throw Error(`Unknown control ${JSON.stringify(control)}`);
     }
     reset() {
         this.statements = [];
@@ -83,7 +83,7 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
         }
         this.statements.push(statement);
     }
-    contextToStatement(context: TWithContext): Promise<void> {
+    contextToStatement(context: TWithContext) {
         const { '@context': contextType, ...rest } = context;
         switch (contextType) {
             case '#haibun/event':
@@ -96,9 +96,8 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
                 throw Error('known context type');
         }
     }
-    infoStatement(info: TControl): Promise<void> {
+    infoStatement(info: TControl) {
         console.log('info', info);
-        return;
     }
     // goto(where: string) {
     //     currentPageTag = bg(PAGE, where, true);

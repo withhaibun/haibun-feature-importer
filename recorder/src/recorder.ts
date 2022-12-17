@@ -1,32 +1,37 @@
-import { runWith } from '@haibun/core/build/lib/run';
-import { getDefaultWorld, asFeatures } from '@haibun/core/build/lib/test/lib';
+import { run } from '@haibun/core/build/lib/run';
+import { getDefaultWorld } from '@haibun/core/build/lib/test/lib';
 import { getDefaultOptions, getStepperOptionName } from '@haibun/core/build/lib/util';
 import WebSocketServer from '@haibun/context/build/websocket-server/websockets-server';
+import ServerExpress from '@haibun/web-server-express/build/web-server-stepper';
 import WebPlaywright from '@haibun/web-playwright';
 import StorageFS from '@haibun/storage-fs';
 import DomainStorage from '@haibun/domain-storage';
 import DomainWebPage from '@haibun/domain-webpage';
 import FeatureImporter from '@haibun/feature-importer/build/feature-importer-stepper';
+import Vars from '@haibun/core/build/steps/vars';
 import Haibun from '@haibun/core/build/steps/haibun';
-import { readFileSync } from 'fs';
+import { TWorld } from '@haibun/core/build/lib/defs';
 
-record();
-
-async function record() {
+export async function record(url: string, featureFilter: string[], options?: { world?: TWorld }) {
     const specl = getDefaultOptions();
-    const { world } = getDefaultWorld(0);
-    world.extraOptions = {
+    const world = options?.world || getDefaultWorld(0).world;
+    const defaultExtraOptions = {
         [getStepperOptionName(WebPlaywright, 'STORAGE')]: 'StorageFS',
         [getStepperOptionName(WebPlaywright, 'PERSISTENT_DIRECTORY')]: 'true',
         [getStepperOptionName(WebPlaywright, 'HEADLESS')]: 'false',
         [getStepperOptionName(WebPlaywright, 'ARGS')]: '--disable-extensions-except=./node_modules/@haibun/browser-extension/public/',
+    };
+    for (const [name, value] of Object.entries(defaultExtraOptions)) {
+        world.extraOptions = {
+            ...world.extraOptions,
+            [name]: world.extraOptions[name] || value
+        }
     }
 
-    const features = asFeatures([{ path: '/features/record.feature', content: readFileSync('./haibun/features/recorder.feature', 'utf8') }]);
-    const backgrounds = asFeatures([{ path: '/backgrounds/extensions.feature', content: readFileSync('./haibun/backgrounds/extensions.feature', 'utf8') }]);
+    world.options = { ...world.options, env: { SITE: url } };
 
-    const result = await runWith({ specl, features, backgrounds, addSteppers: [Haibun, FeatureImporter, WebPlaywright, WebSocketServer, StorageFS, DomainStorage, DomainWebPage], world });
-    console.log('🤑', JSON.stringify(result, null, 2));
+    const result = await run({ specl, base: './recorder', featureFilter, addSteppers: [Haibun, FeatureImporter, WebPlaywright, WebSocketServer, StorageFS, DomainStorage, DomainWebPage, ServerExpress], world });
+    console.log('🤑', JSON.stringify({ ok: result.ok, failure: result.failure }, null, 2));
 
     return result;
 }

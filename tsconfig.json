@@ -9,12 +9,17 @@
   },
   "exclude": [
     "./jest.config.ts",
-    "build",
-    "recorder"
+    "./build",
+    "./node_modules",
+    "./recorder"
+  ],
+  "include": [
+    "./src/**/*ts",
+    "./recorder/src/**/*ts"
   ],
   "references": [
     {
       "path": "./recorder"
-    }
+    },
   ]
 }

@@ -1,9 +1,8 @@
-Backgrounds: extensions
 
 Start a websocket server at port 3294
 add browser contexts to WebSocket server
 
-On the https://www.w3.org webpage
+On the {SITE} webpage
 
 On a new tab
 On the inspect extensions webpage

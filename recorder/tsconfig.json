@@ -4,13 +4,7 @@
     "composite": true,
     "outDir": "./build",
     "rootDir": "./src",
-    "target": "es2021",
-    "module": "commonjs",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
   },
   "include": [
     "./src/**/*ts"
@@ -18,6 +12,6 @@
   "exclude": [
     "./jest.config.ts",
     "./build",
-    "./ndoe_modules"
+    "./node_modules"
   ]
 }
