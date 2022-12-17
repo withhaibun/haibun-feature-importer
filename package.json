@@ -1,5 +1,5 @@
 {
-  "version": "1.13.1",
+  "version": "1.13.2",
   "name": "@haibun/feature-importer",
   "lsd:module": true,
   "files": [
@@ -11,27 +11,26 @@
   "scripts": {
     "test": "jest --config jest.config.ts",
     "test-watch": "jest --config jest.config.ts --watch",
-    "tsc": "tsc",
-    "test-e2e": "HAIBUN_O_WEBPLAYWRIGHT_HEADLESS=false HAIBUN_O_WEBPLAYWRIGHT_PERSISTENT_DIRECTORY=true HAIBUN_O_WEBPLAYWRIGHT_STORAGE=StorageFS HAIBUN_O_WEBPLAYWRIGHT_ARGS='--disable-extensions-except=./node_modules/@haibun/browser-extension/public/' haibun-cli test/",
-    "tsc-watch": "tsc --watch"
+    "tsc": "tsc -b .",
+    "tsc-watch": "tsc -b . --watch"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@haibun/browser-extension": "1.13.1",
-    "@haibun/context": "1.13.1",
-    "@haibun/core": "1.13.1",
-    "@haibun/domain-webpage": "1.13.1"
+    "@haibun/browser-extension": "1.13.2",
+    "@haibun/context": "1.13.2",
+    "@haibun/core": "1.13.2",
+    "@haibun/domain-webpage": "1.13.2"
   },
   "devDependencies": {
-    "@haibun/cli": "1.13.1",
-    "@haibun/context": "1.13.1",
-    "@haibun/domain-storage": "1.13.1",
-    "@haibun/domain-webpage": "1.13.1",
-    "@haibun/feature-importer": "1.13.1",
-    "@haibun/storage-fs": "1.13.1",
-    "@haibun/web-playwright": "1.13.1",
-    "@haibun/web-server-express": "1.13.1",
+    "@haibun/cli": "1.13.2",
+    "@haibun/context": "1.13.2",
+    "@haibun/domain-storage": "1.13.2",
+    "@haibun/domain-webpage": "1.13.2",
+    "@haibun/feature-importer": "1.13.2",
+    "@haibun/storage-fs": "1.13.2",
+    "@haibun/web-playwright": "1.13.2",
+    "@haibun/web-server-express": "1.13.2",
     "@types/chrome": "0.0.203",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.11",
