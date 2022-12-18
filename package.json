@@ -9,6 +9,7 @@
   "main": "index.js",
   "types": "build/src/index.d.ts",
   "scripts": {
+    "test": "jest --config jest.config.ts",
     "test-watch": "jest --config jest.config.ts --watch",
     "tsc": "tsc -b .",
     "tsc-watch": "tsc -b . --watch"
