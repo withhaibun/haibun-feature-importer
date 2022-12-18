@@ -1,5 +1,5 @@
 {
-  "version": "1.13.2",
+  "version": "1.13.3",
   "name": "@haibun/feature-importer",
   "lsd:module": true,
   "files": [
@@ -17,21 +17,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@haibun/browser-extension": "1.13.2",
-    "@haibun/context": "1.13.2",
-    "@haibun/core": "1.13.2",
-    "@haibun/domain-webpage": "1.13.2"
+    "@haibun/context": "1.13.3",
+    "@haibun/core": "1.13.3",
+    "@haibun/domain-webpage": "1.13.3"
   },
   "devDependencies": {
-    "@haibun/cli": "1.13.2",
-    "@haibun/context": "1.13.2",
-    "@haibun/domain-storage": "1.13.2",
-    "@haibun/domain-webpage": "1.13.2",
-    "@haibun/feature-importer": "1.13.2",
-    "@haibun/storage-fs": "1.13.2",
-    "@haibun/web-playwright": "1.13.2",
-    "@haibun/web-server-express": "1.13.2",
-    "@types/chrome": "0.0.203",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.11",
     "@types/urijs": "^1.19.19",
