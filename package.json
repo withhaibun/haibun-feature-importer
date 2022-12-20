@@ -1,5 +1,5 @@
 {
-  "version": "1.13.5",
+  "version": "1.13.6",
   "name": "@haibun/feature-importer",
   "lsd:module": true,
   "files": [
@@ -17,9 +17,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@haibun/context": "1.13.5",
-    "@haibun/core": "1.13.5",
-    "@haibun/domain-webpage": "1.13.5"
+    "@haibun/context": "1.13.6",
+    "@haibun/core": "1.13.6",
+    "@haibun/domain-webpage": "1.13.6"
   },
   "devDependencies": {
     "@types/jest": "^29.2.4",
