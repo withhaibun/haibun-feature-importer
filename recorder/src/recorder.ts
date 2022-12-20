@@ -11,6 +11,7 @@ import FeatureImporter from '@haibun/feature-importer/build/feature-importer-ste
 import Vars from '@haibun/core/build/steps/vars';
 import Haibun from '@haibun/core/build/steps/haibun';
 import { TWorld } from '@haibun/core/build/lib/defs';
+import WebServerStepper from '@haibun/web-server-express/build/web-server-stepper';
 
 export async function record(url: string, featureFilter: string[], options?: { world?: TWorld }) {
     const specl = getDefaultOptions();
@@ -20,6 +21,7 @@ export async function record(url: string, featureFilter: string[], options?: { w
         [getStepperOptionName(WebPlaywright, 'PERSISTENT_DIRECTORY')]: 'true',
         [getStepperOptionName(WebPlaywright, 'HEADLESS')]: 'false',
         [getStepperOptionName(WebPlaywright, 'ARGS')]: '--disable-extensions-except=./node_modules/@haibun/browser-extension/public/',
+        [getStepperOptionName(WebServerStepper, 'PORT')]: '8126',
     };
     for (const [name, value] of Object.entries(defaultExtraOptions)) {
         world.extraOptions = {

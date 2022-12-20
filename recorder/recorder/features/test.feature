@@ -1,4 +1,4 @@
 
-Backgrounds: extension, start-recording
+Backgrounds: extension, service, start-recording
 
-Click 
+Click the button "Submit"

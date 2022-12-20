@@ -3,6 +3,7 @@ import BaseFeatureImporter from "./BaseFeatureImporter";
 import { TControl, TEvent, TFeatureParsed } from "./defs";
 import { WEB_PAGE, SELECTOR } from '@haibun/domain-webpage/build/domain-webpage';
 
+const ignoreControls = ['viewportSize', 'onBeforeNavigate'];
 export default class ContextFeatureImporter extends BaseFeatureImporter {
     stored: { [tag: string]: number } = {};
     tags: { [tag: string]: string | number } = {};
@@ -25,7 +26,7 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
             this.inputBuffered = undefined;
         }
     }
-    controlToStatement(contexted: TControl) {
+    async controlToStatement(contexted: TControl) {
         const { control } = contexted;
         if (control === 'startRecording') {
             this.reset();
@@ -34,7 +35,7 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
         } else if (control === 'recordCurrentUrl') {
             const tag = this.setCurrentPage(contexted.href!);
             this.addStatement(`On the ${this.variableQuoted(tag)} ${WEB_PAGE}`);
-        } else if (control === 'viewportSize') {
+        } else if (ignoreControls.includes(control)) {
         } else if (control === 'stopRecording') {
             console.log(this.getResult());
         } else if (control === 'navigation') {
@@ -47,34 +48,26 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
         this.statements = [];
         this.backgrounds = {};
     }
-    async eventToStatement(event: TEvent): Promise<void> {
+    async eventToStatement(event: TEvent) {
         const { action } = event;
         if (action === 'change') {
             this.finishBuffered();
-            return;
-        }
-        if (action === 'click') {
+        } else if (action === 'click') {
             this.addStatement(`click ${this.variableQuoted(this.bg(SELECTOR, event.selector))}`);
-            return;
-        }
-        if (action === 'dblclick') {
+        } else if (action === 'dblclick') {
             this.addStatement(`double-click ${this.variableQuoted(this.bg(SELECTOR, event.selector))}`);
-            return;
-        }
-        if (action === 'keydown') {
+        } else if (action === 'keydown') {
             this.inputBuffered = {
                 input: event.value + String.fromCharCode(parseInt(event.keyCode, 10)),
                 selector: event.selector
             }
-            return;
-        }
-        if (action === 'submit') {
+        } else if (action === 'submit') {
             this.addStatement(`submit ${this.variableQuoted(this.bg(SELECTOR, event.selector))}`);
-            return;
+        } else {
+            console.log('🤑 unknown', JSON.stringify(event, null, 2));
+            // throw Error(`Unknown event action ${action} from ${JSON.stringify(event)}`);
         }
-        console.log('🤑 unknown', JSON.stringify(event, null, 2));
 
-        // throw Error(`Unknown event action ${action} from ${JSON.stringify(event)}`);
     }
     addStatement(statement: string, debuffer = true) {
         this.logger.log(`adding statement: ${statement}`)
@@ -83,7 +76,7 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
         }
         this.statements.push(statement);
     }
-    contextToStatement(context: TWithContext) {
+    async contextToStatement(context: TWithContext) {
         const { '@context': contextType, ...rest } = context;
         switch (contextType) {
             case '#haibun/event':
@@ -96,7 +89,7 @@ export default class ContextFeatureImporter extends BaseFeatureImporter {
                 throw Error('known context type');
         }
     }
-    infoStatement(info: TControl) {
+    async infoStatement(info: TControl) {
         console.log('info', info);
     }
     // goto(where: string) {
